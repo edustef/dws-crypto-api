@@ -34,22 +34,12 @@ class Application
     try {
       echo $this->router->resolve();
     } catch (\Exception $e) {
-      echo $e;
-      // if (is_numeric($e->getCode())) {
-      //   echo $this->response->json([
-      //     'errorMessage' => $e->getMessage()
-      //   ], $e->getCode());
-      //   return;
-      // }
-
-      // echo $this->response->json([
-      //   'errorMessage' => $e->getMessage()
-      // ]);
-      echo $this->response->json($e);
+      echo $this->response->json($e->getMessage(), $this->response::NOT_FOUND);
     }
   }
 
-  public function getDB(): \MongoDB\Database {
+  public function getDB(): \MongoDB\Database
+  {
     return $this->database;
   }
 }

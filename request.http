@@ -1,0 +1,46 @@
+GET http://localhost/criptoc 
+
+###
+
+POST http://localhost/criptoc 
+Content-Type: application/json
+
+{
+  "test": "test1"
+}
+
+###
+
+PUT http://localhost/criptoc/1
+Content-Type: application/json
+
+{
+  "test": "test1"
+}
+
+###
+
+PUT http://localhost/criptoc/up/2
+Content-Type: application/json
+
+{
+  "test": "test1"
+}
+
+###
+
+PUT http://localhost/criptoc/down/1
+Content-Type: application/json
+
+{
+  "test": "test1"
+}
+
+###
+
+DELETE http://localhost/criptoc/1
+Content-Type: application/json
+
+{
+  "test": "test1"
+}

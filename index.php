@@ -29,6 +29,11 @@ $config = [
 
 $app = new Application($config);
 
-$app->router->get('/tests', [TestController::class, 'resolve']);
+$app->router->get('/criptoc', [TestController::class, 'resolve']);
+$app->router->post('/criptoc', [TestController::class, 'resolve']);
+
+$app->router->put('/criptoc/:id', [TestController::class, 'resolve']);
+$app->router->put('/criptoc/up/:id', [TestController::class, 'resolve']);
+$app->router->put('/criptoc/down/:id', [TestController::class, 'resolve']);
 
 $app->run();

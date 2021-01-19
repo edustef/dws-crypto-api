@@ -54,9 +54,12 @@ class Router
     $path = $this->request->getPath();
     $method = $this->request->method();
 
-    $callback = $this->routes[$method][$path] ?? false;
-    $params = [];
-
+    $params = $this->getRegPath();
+    echo json_encode($params);
+    exit();
+    if ($params === false) {
+      $callback = $this->routes[$method][$path] ?? false;
+    }
     if ($callback === false) {
       throw new NotFoundException();
     }
@@ -70,5 +73,65 @@ class Router
     }
 
     return call_user_func($callback, $this->request, $this->response, $params);
+  }
+
+  private function getReqParams()
+  {
+    $pathMatches = true;
+
+    $method = $this->request->method();
+    $pathArr = explode('/', $this->request->getPath());
+    array_shift($pathArr);
+
+    foreach (array_keys($this->routes[$method]) as $registeredPath) {
+      $pathMatches = true;
+      $params = [];
+      $registeredPathArr = explode('/', $registeredPath);
+      array_shift($registeredPathArr);
+      foreach ($registeredPathArr as $pos => $registeredPathFragment) {
+        if (substr($registeredPathFragment, 0, 1) === ':') {
+          $params[substr($registeredPathFragment, 1)] = $pathArr[$pos];
+        } else if ($registeredPathFragment !== $pathArr[$pos]) {
+          $pathMatches = false;
+          break;
+        }
+      }
+    }
+    if ($pathMatches) {
+      return ['regPath' => $registeredPath, 'params' => $params];
+    }
+
+    // throw new NotFoundException();
+  }
+
+  private function getRegPath()
+  {
+    $pathMatches = true;
+
+    $method = $this->request->method();
+    $pathArr = explode('/', $this->request->getPath());
+    array_shift($pathArr);
+
+    foreach (array_keys($this->routes[$method]) as $registeredPath) {
+      $pathMatches = true;
+      $registeredPathArr = explode('/', $registeredPath);
+      echo $registeredPath;
+      echo ' ---- ';
+      echo $this->request->getPath();
+      array_shift($registeredPathArr);
+      foreach ($registeredPathArr as $pos => $registeredPathFragment) {
+        if (substr($registeredPathFragment, 0, 1) === ':') {
+          // $params[substr($registeredPathFragment, 1)] = $pathArr[$pos];
+        } else if ($registeredPathFragment !== $pathArr[$pos]) {
+          $pathMatches = false;
+          break;
+        }
+      }
+      if ($pathMatches !== false) {
+        return $registeredPath;
+      }
+    }
+
+    return false;
   }
 }
