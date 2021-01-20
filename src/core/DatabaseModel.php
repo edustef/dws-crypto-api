@@ -24,7 +24,7 @@ abstract class DatabaseModel extends Model
     $collectionName = static::collectionName();
   }
 
-  public function updateOne()
+  public function update()
   {
     $collectionName = static::collectionName();
   }
@@ -32,17 +32,5 @@ abstract class DatabaseModel extends Model
   public static function prepare(string $mysql)
   {
     return Application::$app->database->pdo->prepare($mysql);
-  }
-
-  public function attributesToSave(): array
-  {
-    $attributes = array_filter($this->attributes(), function ($attr) {
-      if (!isset($attr['toSave'])) {
-        return true;
-      }
-      return $attr['toSave'] === true;
-    });
-
-    return array_keys($attributes);
   }
 }

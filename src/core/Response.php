@@ -24,6 +24,23 @@ class Response
   public function json($data, $statusCode = self::OK)
   {
     $this->setStatusCode($statusCode);
-    return json_encode($data);
+    return json_encode([
+      'status' => $statusCode,
+      'message' => $this->getMessage($statusCode),
+      'data' => $data
+    ]);
+  }
+
+  public function getMessage($statusCode)
+  {
+    $messages = [
+      self::OK => 'Sent succesfully.',
+      self::CREATED => 'Created succesfully.',
+      self::FORBIDDEN => 'You don\'t have acces to this resource.',
+      self::NOT_FOUND => 'Resource not found.',
+      self::INTERAL_SERVER => 'Don\'t worry. It is not your fault. It is an internal server error.'
+    ];
+
+    return $messages[$statusCode];
   }
 }

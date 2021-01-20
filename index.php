@@ -6,12 +6,8 @@ header('Allow-Access-Origin: application/json');
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-use api\controllers\ClienteController;
-use api\controllers\LibroController;
-use api\controllers\PrestamoController;
-use api\controllers\TestController;
+use api\controllers\Criptoc;
 use edustef\mvcFrame\Application;
-use edustef\mvcFrame\exceptions\ForbiddenException;
 
 if (file_exists(__DIR__ . '/.env')) {
   $dotenv = \Dotenv\Dotenv::createImmutable(__DIR__);
@@ -29,11 +25,12 @@ $config = [
 
 $app = new Application($config);
 
-$app->router->get('/criptoc', [TestController::class, 'resolve']);
-$app->router->post('/criptoc', [TestController::class, 'resolve']);
+$app->router->get('/criptoc', [Criptoc::class, 'getCriptoc']);
+$app->router->get('/criptoc/:id', [Criptoc::class, 'getOneCriptoc']);
+$app->router->post('/criptoc', [Criptoc::class, 'postCriptoc']);
 
-$app->router->put('/criptoc/:id', [TestController::class, 'resolve']);
-$app->router->put('/criptoc/up/:id', [TestController::class, 'resolve']);
-$app->router->put('/criptoc/down/:id', [TestController::class, 'resolve']);
+$app->router->put('/criptoc/:id', [Criptoc::class, 'resolve']);
+$app->router->put('/criptoc/up/:id', [Criptoc::class, 'resolve']);
+$app->router->put('/criptoc/down/:id', [Criptoc::class, 'resolve']);
 
 $app->run();

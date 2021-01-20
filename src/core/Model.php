@@ -26,11 +26,6 @@ abstract class Model
     }
   }
 
-  public function getLabel($attribute)
-  {
-    return $this->attributes()[$attribute]['label'];
-  }
-
   public function validate(): bool
   {
     foreach ($this->attributes() as $attribute => $data) {
@@ -61,10 +56,6 @@ abstract class Model
 
         if ($ruleName === self::RULE_NUMERIC && !is_numeric($value)) {
           $this->addError($attribute, self::RULE_NUMERIC);
-        }
-
-        if ($ruleName === self::RULE_MATCH && $value !== $this->{$rule['match']}) {
-          $this->addError($attribute, self::RULE_MATCH, ['match' => $this->getLabel($rule['match'])]);
         }
       }
     }

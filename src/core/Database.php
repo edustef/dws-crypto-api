@@ -14,7 +14,8 @@ class Database
     $uri = "mongodb+srv://$username:$password@cluster0.08zog.mongodb.net/$dbname?retryWrites=true&w=majority";
     $this->db = (new \MongoDB\Client(!$config['db_local'] ? $uri : 'mongodb://db:27017'))->{$dbname};
   }
-  public function getDB() :\MongoDB\Database
+
+  public function getDB(): \MongoDB\Database
   {
     return $this->db;
   }

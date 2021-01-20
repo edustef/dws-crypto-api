@@ -51,18 +51,10 @@ class Router
    */
   public function resolve(): string
   {
-    $path = $this->request->getPath();
     $method = $this->request->method();
 
-    $params = $this->resolveRoute();
-    echo json_encode($params);
-    exit();
-    if ($params === false) {
-      $callback = $this->routes[$method][$path] ?? false;
-    }
-    if ($callback === false) {
-      throw new NotFoundException();
-    }
+    $resolvedRoute = $this->resolveRoute();
+    $callback = $this->routes[$method][$resolvedRoute['regPath']] ?? false;
 
     //create instance of controller
     if (is_array($callback)) {
@@ -72,7 +64,7 @@ class Router
       $callback[0] = $controller;
     }
 
-    return call_user_func($callback, $this->request, $this->response, $params);
+    return call_user_func($callback, $this->request, $this->response, $resolvedRoute['params']);
   }
 
   private function resolveRoute()

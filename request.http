@@ -2,6 +2,10 @@ GET http://localhost/criptoc
 
 ###
 
+GET http://localhost/criptoc/BTC
+
+###
+
 POST http://localhost/criptoc 
 Content-Type: application/json
 
