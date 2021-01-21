@@ -13,7 +13,7 @@ abstract class Model
   public const RULE_NUMERIC = 'numeric';
   public const RULE_FIX = 'fix';
 
-  abstract public function attributes(): array;
+  // abstract public function attributes(): array;
 
   public array $errors = [];
 
@@ -28,37 +28,37 @@ abstract class Model
 
   public function validate(): bool
   {
-    foreach ($this->attributes() as $attribute => $data) {
-      $rules = $data['rules'] ?? [];
-      $value = $this->{$attribute};
-      foreach ($rules as $rule) {
-        $ruleName = $rule;
+    // foreach ($this->attributes() as $attribute => $data) {
+    //   $rules = $data['rules'] ?? [];
+    //   $value = $this->{$attribute};
+    //   foreach ($rules as $rule) {
+    //     $ruleName = $rule;
 
-        if (is_array($ruleName)) {
-          $ruleName = $rule[0];
-        }
+    //     if (is_array($ruleName)) {
+    //       $ruleName = $rule[0];
+    //     }
 
-        if ($ruleName === self::RULE_REQUIRED && $value === '') {
-          $this->addError($attribute, self::RULE_REQUIRED);
-        }
+    //     if ($ruleName === self::RULE_REQUIRED && $value === '') {
+    //       $this->addError($attribute, self::RULE_REQUIRED);
+    //     }
 
-        if ($ruleName === self::RULE_EMAIL && !filter_var($value, FILTER_VALIDATE_EMAIL)) {
-          $this->addError($attribute, self::RULE_EMAIL);
-        }
+    //     if ($ruleName === self::RULE_EMAIL && !filter_var($value, FILTER_VALIDATE_EMAIL)) {
+    //       $this->addError($attribute, self::RULE_EMAIL);
+    //     }
 
-        if ($ruleName === self::RULE_MIN && strlen($value) < $rule['min']) {
-          $this->addError($attribute, self::RULE_MIN, $rule);
-        }
+    //     if ($ruleName === self::RULE_MIN && strlen($value) < $rule['min']) {
+    //       $this->addError($attribute, self::RULE_MIN, $rule);
+    //     }
 
-        if ($ruleName === self::RULE_MAX && strlen($value) > $rule['max']) {
-          $this->addError($attribute, self::RULE_MAX, $rule);
-        }
+    //     if ($ruleName === self::RULE_MAX && strlen($value) > $rule['max']) {
+    //       $this->addError($attribute, self::RULE_MAX, $rule);
+    //     }
 
-        if ($ruleName === self::RULE_NUMERIC && !is_numeric($value)) {
-          $this->addError($attribute, self::RULE_NUMERIC);
-        }
-      }
-    }
+    //     if ($ruleName === self::RULE_NUMERIC && !is_numeric($value)) {
+    //       $this->addError($attribute, self::RULE_NUMERIC);
+    //     }
+    //   }
+    // }
 
     return empty($this->errors);
   }

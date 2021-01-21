@@ -6,31 +6,42 @@ abstract class DatabaseModel extends Model
 {
   abstract public static function collectionName(): string;
 
-  public function insertOne()
+  public function insertOne($data)
   {
+    $collection = Application::$app->database->${static::collectionName()};
+
+    $collection->insertOne($data);
+  }
+
+  public static function find(array $where)
+  {
+    $collection = Application::$app->database->${static::collectionName()};
+    $results = [];
+
+    $cursor = $collection->find();
+
+    foreach ($cursor as $criptoc) {
+      $results[] = $criptoc;
+    }
+
+    return $results;
   }
 
   public static function findOne(array $where)
   {
-  }
-
-  public static function find(array $where = null)
-  {
-    $collectionName = static::collectionName();
+    $collection = Application::$app->database->${static::collectionName()};
+    return $collection->findOne($where);
   }
 
   public static function deleteOne(array $where)
   {
-    $collectionName = static::collectionName();
+    $collection = Application::$app->database->${static::collectionName()};
+    return $collection->deleteOne($where);
   }
 
-  public function update()
+  public function updateOne($where, $setData)
   {
-    $collectionName = static::collectionName();
-  }
-
-  public static function prepare(string $mysql)
-  {
-    return Application::$app->database->pdo->prepare($mysql);
+    $collection = Application::$app->database->${static::collectionName()};
+    return $collection->updateOne([$where, '$set' => $setData]);
   }
 }

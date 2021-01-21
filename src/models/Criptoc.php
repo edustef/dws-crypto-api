@@ -4,7 +4,6 @@ use edustef\mvcFrame\DatabaseModel;
 
 class Criptoc extends DatabaseModel
 {
-  public $_id;
   public $name;
   public $symbol;
   public $description;
@@ -20,10 +19,5 @@ class Criptoc extends DatabaseModel
   public static function collectionName(): string
   {
     return 'criptoc';
-  }
-
-  public function attributes(): array
-  {
-    return [];
   }
 }

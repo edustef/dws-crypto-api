@@ -12,7 +12,6 @@ class Application
   // Controller is instanciated in Router class 
   public ?Controller $controller = null;
 
-  public Session $session;
   public ?\MongoDB\Database $database = null;
 
   public function __construct(array $config)
@@ -21,7 +20,6 @@ class Application
 
     $this->request = new Request();
     $this->response = new Response();
-    $this->session = new Session();
     $this->router = new Router($this->request, $this->response);
 
     if (isset($config['db'])) {
