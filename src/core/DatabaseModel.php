@@ -4,21 +4,26 @@ namespace edustef\mvcFrame;
 
 abstract class DatabaseModel extends Model
 {
-  abstract public static function collectionName(): string;
+  abstract public static function collection();
 
-  public function insertOne($data)
+  public static function insertOne($data)
   {
-    $collection = Application::$app->database->${static::collectionName()};
+    $collection = static::collection();
 
-    $collection->insertOne($data);
+    $result = $collection->insertOne($data);
+    if ($result->getInsertedCount() > 0) {
+      return true;
+    }
+
+    return false;
   }
 
-  public static function find(array $where)
+  public static function find(array $where = [])
   {
-    $collection = Application::$app->database->${static::collectionName()};
+    $collection = static::collection();
     $results = [];
 
-    $cursor = $collection->find();
+    $cursor = $collection->find($where);
 
     foreach ($cursor as $criptoc) {
       $results[] = $criptoc;
@@ -29,19 +34,20 @@ abstract class DatabaseModel extends Model
 
   public static function findOne(array $where)
   {
-    $collection = Application::$app->database->${static::collectionName()};
+    $collection = static::collection();
     return $collection->findOne($where);
   }
 
   public static function deleteOne(array $where)
   {
-    $collection = Application::$app->database->${static::collectionName()};
-    return $collection->deleteOne($where);
+    $collection = static::collection();
+    $result = $collection->deleteOne($where);
+    return $result->getDeletedCount() > 0;
   }
 
-  public function updateOne($where, $setData)
+  public static function updateOne(array $where, array $setData)
   {
-    $collection = Application::$app->database->${static::collectionName()};
-    return $collection->updateOne([$where, '$set' => $setData]);
+    $collection = static::collection();
+    return $collection->updateOne($where, ['$set' => $setData]);
   }
 }

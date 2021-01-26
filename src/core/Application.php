@@ -12,7 +12,7 @@ class Application
   // Controller is instanciated in Router class 
   public ?Controller $controller = null;
 
-  public ?\MongoDB\Database $database = null;
+  public ?Database $database = null;
 
   public function __construct(array $config)
   {
@@ -23,7 +23,7 @@ class Application
     $this->router = new Router($this->request, $this->response);
 
     if (isset($config['db'])) {
-      $this->database = (new Database($config['db']))->getDB();
+      $this->database = new Database($config['db']);
     }
   }
 
@@ -34,10 +34,5 @@ class Application
     } catch (\Exception $e) {
       echo $this->response->json($e->getMessage(), $this->response::NOT_FOUND);
     }
-  }
-
-  public function getDB(): \MongoDB\Database
-  {
-    return $this->database;
   }
 }

@@ -75,6 +75,9 @@ class Router
     $pathArr = explode('/', $this->request->getPath());
     array_shift($pathArr);
 
+    if (is_null($this->routes[$method])) {
+      throw new NotFoundException();
+    }
 
     foreach (array_keys($this->routes[$method]) as $registeredPath) {
 

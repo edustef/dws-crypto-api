@@ -62,6 +62,33 @@ class Request
 
   public function setBody()
   {
+    $body = $this->isJSON() ? $this->parseJSON() : $this->parse();
+    $this->body = $body;
+  }
+
+  public function getBody(): array
+  {
+    $body = $this->body;
+    unset($body['_method']);
+    return $body;
+  }
+
+  private function parseJSON()
+  {
+    $body = [];
+
+    $raw = file_get_contents("php://input");
+    $data = json_decode($raw, true);
+    foreach ($data as $key => $value) {
+      $body[$key] = $value;
+    }
+
+
+    return $body;
+  }
+
+  private function parse()
+  {
     $body = [];
     if ($this->isGet()) {
       foreach (array_keys($_GET) as $key) {
@@ -73,20 +100,23 @@ class Request
         $body[$key] = filter_input(INPUT_POST, $key, FILTER_SANITIZE_STRING);
       }
     } else {
-      $data = null;
+      $data = [];
       parse_str(file_get_contents("php://input"), $data);
       foreach ($data as $key => $value) {
         $body[$key] = filter_var($value, FILTER_SANITIZE_STRING);
       }
     }
 
-    $this->body = $body;
+    return $body;
   }
 
-  public function getBody(): array
+  private function isJSON()
   {
-    $body = $this->body;
-    unset($body['_method']);
-    return $body;
+    $type = $_SERVER['CONTENT_TYPE'];
+    if (!is_null($type) && $type === 'application/json') {
+      return true;
+    }
+
+    return false;
   }
 }

@@ -26,11 +26,16 @@ $config = [
 $app = new Application($config);
 
 $app->router->get('/criptoc', [Criptoc::class, 'getCriptoc']);
-$app->router->get('/criptoc/:id', [Criptoc::class, 'getOneCriptoc']);
+$app->router->get('/criptoc/topvalue', [Criptoc::class, 'getTopCriptoc']);
 $app->router->post('/criptoc', [Criptoc::class, 'postCriptoc']);
 
-$app->router->put('/criptoc/:id', [Criptoc::class, 'resolve']);
-$app->router->put('/criptoc/up/:id', [Criptoc::class, 'resolve']);
-$app->router->put('/criptoc/down/:id', [Criptoc::class, 'resolve']);
+$app->router->get('/criptoc/:id', [Criptoc::class, 'getOneCriptoc']);
+$app->router->put('/criptoc/:id', [Criptoc::class, 'updateCriptoc']);
+
+
+$app->router->put('/criptoc/up/:id', [Criptoc::class, 'upCriptocValue']);
+$app->router->put('/criptoc/down/:id', [Criptoc::class, 'downCriptocValue']);
+
+$app->router->delete('/criptoc/:id', [Criptoc::class, 'deleteCriptoc']);
 
 $app->run();
