@@ -112,11 +112,6 @@ class Request
 
   private function isJSON()
   {
-    $type = $_SERVER['CONTENT_TYPE'];
-    if (!is_null($type) && $type === 'application/json') {
-      return true;
-    }
-
-    return false;
+    return true;
   }
 }
