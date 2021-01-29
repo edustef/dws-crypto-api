@@ -79,12 +79,16 @@ class Request
 
     $raw = file_get_contents("php://input");
     $data = json_decode($raw, true);
-    foreach ($data as $key => $value) {
-      $body[$key] = $value;
+    if ($data) {
+
+      foreach ($data as $key => $value) {
+        $body[$key] = $value;
+      }
+
+      return $body;
     }
 
-
-    return $body;
+    return [];
   }
 
   private function parse()
